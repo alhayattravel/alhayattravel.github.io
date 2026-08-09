@@ -324,7 +324,12 @@
         <div id="page-drops" class="page-view">
             <div class="glass-card rounded-3xl p-6">
                 <div class="text-center mb-6"><div class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3 text-2xl font-bold"><i class="fa-solid fa-tags"></i></div><h3 class="text-xl font-black text-white mb-1" data-ar="العروض الحصرية وتخفيضات السفر (Deals & Drops)" data-en="Exclusive Deals & Travel Discounts">Exclusive Deals & Travel Discounts</h3><p class="text-xs text-slate-400" data-ar="أقوى عروض الرحلات اليومية والوجهات الرخيصة المحدثة فوراً" data-en="The strongest daily trip offers and cheap destinations updated instantly">The strongest daily trip offers and cheap destinations updated instantly</p></div>
-                <div class="space-y-4">
+
+
+                <!-- عروض لوحة التحكم - لا تحذف -->
+<div id="dynamicOffersFromPanel" class="space-y-4 mb-6"></div>
+<div id="dynamicOffersLoader" class="text-center py-2 text-[11px] text-slate-500"><i class="fa-solid fa-spinner fa-spin mr-2"></i> جاري تحميل العروض...</div>
+                <div class="space-y-4"> 
                     <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl"><h4 class="text-sm font-bold text-sky-400 mb-3 flex items-center gap-2"><i class="fa-solid fa-plane-departure"></i> <span data-ar="رحلات رخيصة (Budget Flights)" data-en="Budget Flights">Budget Flights</span></h4><div class="grid grid-cols-1 md:grid-cols-2 gap-3"><div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700/60 flex justify-between items-center"><div><span class="text-xs font-bold text-white block" data-ar="من الرياض (RUH) إلى دبي (DXB)" data-en="From Riyadh (RUH) to Dubai (DXB)">From Riyadh (RUH) to Dubai (DXB)</span><span class="text-[10px] text-slate-400" data-ar="طيران اقتصادي مباشر" data-en="Direct budget flight">Direct budget flight</span></div><div class="text-left"><span class="text-amber-400 font-bold text-sm block" data-ar="تبدأ من $99" data-en="Starts at $99">Starts at $99</span><button onclick="navigateTo('flights')" class="text-[10px] text-sky-400 underline" data-ar="احجز الآن" data-en="Book Now">Book Now</button></div></div><div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700/60 flex justify-between items-center"><div><span class="text-xs font-bold text-white block" data-ar="من جدة (JED) إلى إسطنبول (IST)" data-en="From Jeddah (JED) to Istanbul (IST)">From Jeddah (JED) to Istanbul (IST)</span><span class="text-[10px] text-slate-400" data-ar="عرض خاص محدود الأيام" data-en="Limited days special offer">Limited days special offer</span></div><div class="text-left"><span class="text-amber-400 font-bold text-sm block" data-ar="تبدأ من $145" data-en="Starts at $145">Starts at $145</span><button onclick="navigateTo('flights')" class="text-[10px] text-sky-400 underline" data-ar="احجز الآن" data-en="Book Now">Book Now</button></div></div></div></div>
                     <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl"><h4 class="text-sm font-bold text-emerald-400 mb-3 flex items-center gap-2"><i class="fa-solid fa-fire text-amber-500"></i> <span data-ar="عروض اليوم (Today's Hot Deals)" data-en="Today's Hot Deals">Today's Hot Deals</span></h4><div class="grid grid-cols-1 md:grid-cols-2 gap-3"><div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700/60 flex justify-between items-center"><div><span class="text-xs font-bold text-white block" data-ar="باقة فندق + طيران (شرم الشيخ)" data-en="Hotel + Flight Package (Sharm El Sheikh)">Hotel + Flight Package (Sharm El Sheikh)</span><span class="text-[10px] text-slate-400" data-ar="إقامة 4 ليالٍ مع الفطور" data-en="4 nights stay with breakfast">4 nights stay with breakfast</span></div><div class="text-left"><span class="text-amber-400 font-bold text-sm block" data-ar="خصم 35%" data-en="35% OFF">35% OFF</span><button onclick="navigateTo('hotels')" class="text-[10px] text-sky-400 underline" data-ar="اكتشف العرض" data-en="Explore Offer">Explore Offer</button></div></div><div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700/60 flex justify-between items-center"><div><span class="text-xs font-bold text-white block" data-ar="تأجير سيارات في أوروبا" data-en="Car rental in Europe">Car rental in Europe</span><span class="text-[10px] text-slate-400" data-ar="بدون رسوم إلغاء" data-en="No cancellation fees">No cancellation fees</span></div><div class="text-left"><span class="text-amber-400 font-bold text-sm block" data-ar="وفر حتى $50" data-en="Save up to $50">Save up to $50</span><button onclick="navigateTo('cars')" class="text-[10px] text-sky-400 underline" data-ar="استأجر الآن" data-en="Rent Now">Rent Now</button></div></div></div></div>
                 </div>
@@ -817,5 +822,49 @@
             document.getElementById('artTab-' + tabId).classList.add('active-article-tab');
         }
     </script>
+<script type="module">
+import { getFirestore, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
+// هيستخدم نفس مشروعك alhaya-travel اللي عندك
+const db = getFirestore(getApp());
+const container = document.getElementById('dynamicOffersFromPanel');
+const loader = document.getElementById('dynamicOffersLoader');
+
+const q = query(collection(db, "alh_real_offers"), where("active", "==", true));
+
+onSnapshot(q, (snap) => {
+  if(loader) loader.style.display = 'none';
+  if(snap.empty){ container.innerHTML = ''; return; }
+
+  let html = '';
+  snap.forEach(d => {
+    const o = d.data();
+    const book = o.bookingLink || `https://alhayattravel.github.io/?origin=${o.fromCode||'AUH'}&destination=${o.toCode||'CAI'}&marker=758619`;
+    html += `
+    <div class="relative rounded-2xl overflow-hidden border border-amber-500/30 shadow-xl" style="background:url('${o.image||'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e'}') center/cover; min-height:190px">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+      <div class="absolute top-3 right-3 bg-amber-500 text-slate-900 text-[10px] font-black px-2.5 py-1 rounded-full">${o.badge||o.to||'مصر'}</div>
+      <div class="absolute bottom-0 left-0 right-0 p-3">
+        <div class="bg-white rounded-xl p-3 flex justify-between items-center border-t-4 border-amber-400">
+          <div>
+            <div class="text-[10px] text-amber-600 font-bold">${o.dateText||''}</div>
+            <div class="flex items-center gap-2 font-black text-slate-900 text-sm">${o.fromCode||'AUH'} <i class="fa-solid fa-plane text-amber-500 text-[10px]"></i> ${o.toCode||'CAI'}</div>
+            <div class="text-[10px] text-slate-600">${o.from||'أبوظبي'} → ${o.to||'القاهرة'}</div>
+            <div class="text-[9px] text-slate-500 mt-1">${o.stopsText||'توقف واحد'} • ${o.classText||'الاقتصادية'}</div>
+          </div>
+          <div class="text-left">
+            <div class="text-[10px] text-slate-500">تبدأ من</div>
+            <div class="font-black text-amber-600 text-lg">${o.price||'550'} <span class="text-[10px]">${o.currency||'درهم'}</span></div>
+            <a href="${book}" target="_blank" class="mt-1 inline-block bg-amber-400 text-slate-900 font-black text-[11px] px-4 py-1.5 rounded-full">احجز الآن</a>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+});
+</script>
+    
 </body>
 </html>
