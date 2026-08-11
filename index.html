@@ -890,23 +890,10 @@ onSnapshot(q, (snap) => {
   container.innerHTML = html;
 });
 
-  window.shareDynamicOffer = async function(from, to, fromCode, toCode, price, dateText, bookingLink, btn){
+    window.shareDynamicOffer = async function(from, to, fromCode, toCode, price, dateText, bookingLink, btn){
   var text = "عرض خاص 🔥 " + from + " (" + fromCode + ") → " + to + " (" + toCode + ") فقط " + price + " درهم - " + dateText + "\nاحجز الآن: " + bookingLink;
   var imageUrl = "";
- {
-  const flightType = offer.flightType || 'مباشر';
-  let stops = offer.stopsCount || '1';
-  const cabin = offer.cabinClass || 'الاقتصادية';
-  
-  if (stops === '1') stops = 'توقف واحد';
-  if (stops === '2') stops = 'توقفان';
-  if (stops === '3') stops = '3 توقفات';
-
-  return flightType === 'مباشر' 
-    ? `مباشر • ${cabin}` 
-    : `${stops} • ${cabin}`;
-}
-
+  var stopsText = "مباشر • الاقتصادية";
   try{
     var card = btn? btn.closest(".relative") : null;
     if(card){
