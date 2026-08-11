@@ -865,27 +865,28 @@ onSnapshot(q, (snap) => {
       const safe = (t) => (t||'').toString().replace(/'/g, "\\'");
     html += `
     <div class="relative rounded-2xl overflow-hidden border border-amber-500/30 shadow-xl" style="background:url('${o.image||'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e'}') center/cover; min-height:320px">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-      <div class="absolute top-3 right-3 bg-amber-500 text-slate-900 text-[10px] font-black px-2.5 py-1 rounded-full">${o.badge||o.to||'مصر'}</div>
-      <div class="absolute bottom-0 left-0 right-0 p-3">
-        <div class="bg-white rounded-xl p-3 flex justify-between items-center border-t-4 border-amber-400">
-          <div>
-            <div class="text-[10px] text-amber-600 font-bold">${o.dateText||''}</div>
-            <div class="flex items-center gap-2 font-black text-slate-900 text-sm">${o.fromCode||'AUH'} <i class="fa-solid fa-plane text-amber-500 text-[10px]"></i> ${o.toCode||'CAI'}</div>
-            <div class="text-[10px] text-slate-600">${o.from||'أبوظبي'} → ${o.to||'القاهرة'}</div>
-            <div class="text-[9px] text-slate-500 mt-1">${o.stopsText||'توقف واحد'} • ${o.classText||'الاقتصادية'}</div>
+    html += `
+    <div class="relative rounded-2xl overflow-hidden border border-amber-500/30 shadow-xl" style="background:url('${o.image||'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e'}') center/cover; min-height:320px">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+      <div class="absolute top-3 right-3 bg-amber-500 text-slate-900 text-[10px] font-black px-2.5 py-1 rounded-full">${o.badge||'عرض خاص'}</div>
+      <div class="absolute bottom-0 left-0 right-0 p-2.5">
+        <div class="bg-white/95 backdrop-blur rounded-xl p-3 flex justify-between items-center border-t-2 border-amber-400">
+          <div class="text-right">
+            <p class="text-[10px] text-amber-600 font-bold">${o.dateText||''}</p>
+            <p class="text-sm font-black text-slate-900">${safe(o.fromCode)} <span class="text-amber-500">✈</span> ${safe(o.toCode)}</p>
+            <p class="text-xs text-slate-600">${safe(o.from)} → ${safe(o.to)}</p>
+            <p class="text-[10px] text-slate-500">• ${safe(o.stops||'توقف واحد')} • ${safe(o.cabin||'الاقتصادية')}</p>
           </div>
           <div class="text-left">
-            <div class="text-[10px] text-slate-500">تبدأ من</div>
-            <div class="font-black text-amber-600 text-lg">${o.price||'550'} <span class="text-[10px]">${o.currency||'درهم'}</span></div>
+            <p class="text-[10px] text-slate-500">للخدمة</p>
+            <p class="text-xl font-black text-amber-600">${safe(o.price)} <span class="text-xs">درهم</span></p>
             <div class="flex items-center gap-1.5 mt-1">
-  onclick="shareDynamicOffer('${safe(o.from)}','${safe(o.to)}','${safe(o.fromCode)}','${safe(o.toCode)}','${safe(o.price)}','${safe(o.dateText)}','${book}','${o.image}')" class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 border border-amber-400/30 flex items-center justify-center text-[12px]"><i class="fa-solid fa-share-nodes"></i></button>
-  <a href="${book}" target="_blank" class="inline-block bg-amber-400 text-slate-900 font-black text-[11px] px-4 py-1.5 rounded-full">احجز الآن</a>
-</div>
+              <button onclick="shareDynamicOffer('${safe(o.from)}','${safe(o.to)}','${safe(o.fromCode)}','${safe(o.toCode)}','${safe(o.price)}','${safe(o.dateText)}','${book}','${(o.image||'').replace(/'/g, '')}')" class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 flex items-center justify-center"><i class="fa-solid fa-share-nodes text-[12px]"></i></button>
+              <a href="${book}" target="_blank" class="bg-amber-400 text-slate-900 text-[11px] font-black px-3 py-1.5 rounded-full">احجز الآن</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>`;
   });
   container.innerHTML = html;
 });
