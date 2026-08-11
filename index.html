@@ -879,7 +879,7 @@ onSnapshot(q, (snap) => {
             <div class="text-[10px] text-slate-500">تبدأ من</div>
             <div class="font-black text-amber-600 text-lg">${o.price||'550'} <span class="text-[10px]">${o.currency||'درهم'}</span></div>
             <div class="flex items-center gap-1.5 mt-1">
-  <button onclick="shareDynamicOffer('${safe(o.from)}','${safe(o.to)}','${safe(o.fromCode)}','${safe(o.toCode)}','${safe(o.price)}','${safe(o.dateText)}','${book}')" class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 border border-amber-400/30 flex items-center justify-center text-[12px]"><i class="fa-solid fa-share-nodes"></i></button>
+  <button onclick="shareDynamicOffer('${safe(o.from)}','${safe(o.to)}','${safe(o.fromCode)}','${safe(o.toCode)}','${safe(o.price)}','${safe(o.dateText)}','${book}', this)" class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 border border-amber-400/30 flex items-center justify-center text-[12px]"><i class="fa-solid fa-share-nodes"></i></button>
   <a href="${book}" target="_blank" class="inline-block bg-amber-400 text-slate-900 font-black text-[11px] px-4 py-1.5 rounded-full">احجز الآن</a>
 </div>
           </div>
@@ -890,20 +890,31 @@ onSnapshot(q, (snap) => {
   container.innerHTML = html;
 });
 
-    window.shareDynamicOffer = async function(from, to, fromCode, toCode, price, dateText, bookingLink, imageUrl){
+  window.shareDynamicOffer = async function(from, to, fromCode, toCode, price, dateText, bookingLink, btn){
   const text = `عرض خاص 🔥 ${from} (${fromCode}) → ${to} (${toCode}) فقط ${price} درهم - ${dateText}\nاحجز الآن: ${bookingLink}`;
-  try {
-    const res = await fetch(imageUrl);
-    const blob = await res.blob();
-    const file = new File([blob], `${fromCode}-${toCode}.jpg`, {type: blob.type});
-    if (navigator.canShare && navigator.canShare({files: [file]})) {
-      await navigator.share({ files: [file], title: `ALHAYA - ${from} → ${to}`, text: text });
-      return;
+  let imageUrl = '';
+  try{
+    const card = btn ? btn.closest('.relative') : null;
+    if(card){
+      const st = card.getAttribute('style') || '';
+      const m = st.match(/url\(['"]?(.*?)['"]?\)/);
+      if(m) imageUrl = m[1];
     }
-  } catch(e) {}
-  if (navigator.share) {
-    navigator.share({ title: `ALHAYA - ${from} → ${to}`, text: text, url: bookingLink });
-  } else {
+  }catch(e){}
+  if(imageUrl){
+    try{
+      const res = await fetch(imageUrl);
+      const blob = await res.blob();
+      const file = new File([blob], `${fromCode}-${toCode}.jpg`, {type: blob.type});
+      if(navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({files:[file], title:`ALHAYA - ${from} → ${to}`, text:text});
+        return;
+      }
+    }catch(e){}
+  }
+  if(navigator.share){
+    navigator.share({title:`ALHAYA - ${from} → ${to}`, text:text, url:bookingLink});
+  }else{
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   }
     }
