@@ -891,77 +891,60 @@ onSnapshot(q, (snap) => {
 });
 
   window.shareDynamicOffer = async function(from, to, fromCode, toCode, price, dateText, bookingLink, btn){
-  const text = `عرض خاص 🔥 ${from} (${fromCode}) → ${to} (${toCode}) فقط ${price} درهم - ${dateText}\nاحجز الآن: ${bookingLink}`;
- window.shareDynamicOffer = async function(from, to, fromCode, toCode, price, dateText, bookingLink, btn){
-  const text = `عرض خاص 🔥 ${from} (${fromCode}) → ${to} (${toCode}) فقط ${price} درهم - ${dateText}\nاحجز الآن: ${bookingLink}`;
-  let imageUrl = '';
+  var text = "عرض خاص \uD83D\uDD25 " + from + " (" + fromCode + ") → " + to + " (" + toCode + ") فقط " + price + " درهم - " + dateText + "\nاحجز الآن: " + bookingLink;
+  var imageUrl = "";
   try{
-    const card = btn? btn.closest('.relative') : null;
+    var card = btn? btn.closest(".relative") : null;
     if(card){
-      const st = card.getAttribute('style') || '';
-      const m = st.match(/url\(['"]?(.*?)['"]?\)/);
+      var st = card.getAttribute("style") || "";
+      var m = st.match(/url\(['"]?(.*?)['"]?\)/);
       if(m) imageUrl = m[1];
     }
   }catch(e){}
-
   if(imageUrl){
     try{
-      const img = new Image();
+      var img = new Image();
       img.crossOrigin = "anonymous";
       img.src = imageUrl;
-      await new Promise((res, rej)=>{ img.onload=res; img.onerror=rej; });
-
-      const W=1080, H=1350;
-      const canvas=document.createElement('canvas');
+      await new Promise(function(res, rej){ img.onload=res; img.onerror=rej; });
+      var W=1080, H=1350;
+      var canvas=document.createElement("canvas");
       canvas.width=W; canvas.height=H;
-      const ctx=canvas.getContext('2d');
-
-      const r=Math.max(W/img.width, H/img.height);
-      const nw=img.width*r, nh=img.height*r;
+      var ctx=canvas.getContext("2d");
+      var r=Math.max(W/img.width, H/img.height);
+      var nw=img.width*r, nh=img.height*r;
       ctx.drawImage(img, (W-nw)/2, (H-nh)/2, nw, nh);
-
-      const panelH=380, panelY=H-panelH-30;
-      ctx.fillStyle="rgba(255,255,255,0.97)";
-      ctx.beginPath();
-      if(ctx.roundRect) ctx.roundRect(30, panelY, W-60, panelH, 24);
-      else ctx.rect(30, panelY, W-60, panelH);
-      ctx.fill();
+      var panelH=360, panelY=H-panelH-20;
+      ctx.fillStyle="white";
+      ctx.fillRect(20, panelY, W-40, panelH);
       ctx.fillStyle="#f59e0b";
-      ctx.fillRect(30, panelY, W-60, 10);
-
+      ctx.fillRect(20, panelY, W-40, 10);
+      ctx.fillStyle="#111";
+      ctx.font="bold 32px Arial";
       ctx.textAlign="right";
-      ctx.fillStyle="#d97706";
-      ctx.font="bold 28px Arial";
-      ctx.fillText(dateText||'', W-60, panelY+50);
-
-      ctx.fillStyle="#0f172a";
-      ctx.font="900 44px Arial";
-      ctx.fillText(`${fromCode} ✈ ${toCode}`, W-60, panelY+115);
-
-      ctx.fillStyle="#475569";
-      ctx.font="28px Arial";
-      ctx.fillText(`${from} → ${to}`, W-60, panelY+165);
-
+      ctx.fillText(dateText||"", W-50, panelY+55);
+      ctx.font="900 42px Arial";
+      ctx.fillText(fromCode+" ✈ "+toCode, W-50, panelY+115);
+      ctx.font="26px Arial";
+      ctx.fillText(from+" → "+to, W-50, panelY+160);
       ctx.textAlign="left";
       ctx.fillStyle="#d97706";
-      ctx.font="900 56px Arial";
-      ctx.fillText(`${price} درهم`, 60, panelY+125);
-
-      const blob = await new Promise(r=>canvas.toBlob(r,'image/jpeg',0.92));
-      const file = new File([blob], `${fromCode}-${toCode}.jpg`, {type:'image/jpeg'});
+      ctx.font="900 52px Arial";
+      ctx.fillText(price+" درهم", 50, panelY+125);
+      var blob = await new Promise(function(r){ canvas.toBlob(r,"image/jpeg",0.9); });
+      var file = new File([blob], fromCode+"-"+toCode+".jpg", {type:"image/jpeg"});
       if(navigator.canShare && navigator.canShare({files:[file]})){
-        await navigator.share({files:[file], title:`ALHAYA - ${from} → ${to}`, text:text});
+        await navigator.share({files:[file], title:"ALHAYA - "+from+" → "+to, text:text});
         return;
       }
-    }catch(e){ console.log(e); }
+    }catch(e){}
   }
-
   if(navigator.share){
-    navigator.share({title:`ALHAYA - ${from} → ${to}`, text:text, url:bookingLink});
+    navigator.share({title:"ALHAYA - "+from+" → "+to, text:text, url:bookingLink});
   }else{
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    window.open("https://wa.me/?text="+encodeURIComponent(text), "_blank");
   }
- }
+          }
 </script> 
 
     
