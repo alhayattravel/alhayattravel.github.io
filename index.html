@@ -891,14 +891,20 @@ onSnapshot(q, (snap) => {
 });
 
   window.shareDynamicOffer = async function(from, to, fromCode, toCode, price, dateText, bookingLink, btn){
-  var text = "عرض خاص \uD83D\uDD25 " + from + " (" + fromCode + ") → " + to + " (" + toCode + ") فقط " + price + " درهم - " + dateText + "\nاحجز الآن: " + bookingLink;
+  var text = "عرض خاص 🔥 " + from + " (" + fromCode + ") → " + to + " (" + toCode + ") فقط " + price + " درهم - " + dateText + "\nاحجز الآن: " + bookingLink;
   var imageUrl = "";
+  var stopsText = "توقف واحد • الاقتصادية";
   try{
     var card = btn? btn.closest(".relative") : null;
     if(card){
       var st = card.getAttribute("style") || "";
       var m = st.match(/url\(['"]?(.*?)['"]?\)/);
       if(m) imageUrl = m[1];
+      var allP = card.innerText || "";
+      if(allP.indexOf("توقف")>-1){
+        var lines = allP.split("\n");
+        for(var i=0;i<lines.length;i++){ if(lines[i].indexOf("توقف")>-1){ stopsText = lines[i].trim(); break; } }
+      }
     }
   }catch(e){}
   if(imageUrl){
@@ -914,24 +920,47 @@ onSnapshot(q, (snap) => {
       var r=Math.max(W/img.width, H/img.height);
       var nw=img.width*r, nh=img.height*r;
       ctx.drawImage(img, (W-nw)/2, (H-nh)/2, nw, nh);
-      var panelH=360, panelY=H-panelH-20;
+      var panelH=420, panelY=H-panelH-25;
       ctx.fillStyle="white";
-      ctx.fillRect(20, panelY, W-40, panelH);
+      ctx.fillRect(25, panelY, W-50, panelH);
       ctx.fillStyle="#f59e0b";
-      ctx.fillRect(20, panelY, W-40, 10);
-      ctx.fillStyle="#111";
-      ctx.font="bold 32px Arial";
-      ctx.textAlign="right";
-      ctx.fillText(dateText||"", W-50, panelY+55);
-      ctx.font="900 42px Arial";
-      ctx.fillText(fromCode+" ✈ "+toCode, W-50, panelY+115);
-      ctx.font="26px Arial";
-      ctx.fillText(from+" → "+to, W-50, panelY+160);
+      ctx.fillRect(25, panelY, W-50, 10);
+      ctx.fillStyle="#b45309";
+      ctx.font="bold 28px Arial";
       ctx.textAlign="left";
+      ctx.fillText(dateText||"18/8/30", 50, panelY+50);
+      ctx.textAlign="right";
+      ctx.fillStyle="#6b7280";
+      ctx.font="22px Arial";
+      ctx.fillText("تبدأ من", W-50, panelY+50);
+      ctx.fillStyle="#0f172a";
+      ctx.font="900 42px Arial";
+      ctx.textAlign="left";
+      ctx.fillText(fromCode+" ✈ "+toCode, 50, panelY+110);
       ctx.fillStyle="#d97706";
-      ctx.font="900 52px Arial";
-      ctx.fillText(price+" درهم", 50, panelY+125);
-      var blob = await new Promise(function(r){ canvas.toBlob(r,"image/jpeg",0.9); });
+      ctx.textAlign="right";
+      ctx.font="900 56px Arial";
+      ctx.fillText(price+" درهم", W-50, panelY+115);
+      ctx.fillStyle="#475569";
+      ctx.font="24px Arial";
+      ctx.textAlign="left";
+      ctx.fillText(from+" → "+to, 50, panelY+150);
+      ctx.font="22px Arial";
+      ctx.fillText(stopsText, 50, panelY+185);
+      ctx.fillStyle="#111827";
+      ctx.beginPath();
+      ctx.arc(W-110, panelY+300, 40, 0, Math.PI*2);
+      ctx.fill();
+      ctx.fillStyle="#fbbf24";
+      ctx.font="bold 30px Arial";
+      ctx.textAlign="center";
+      ctx.fillText("↗", W-110, panelY+312);
+      ctx.fillStyle="#fbbf24";
+      ctx.fillRect(W-360, panelY+260, 220, 70);
+      ctx.fillStyle="black";
+      ctx.font="900 28px Arial";
+      ctx.fillText("احجز الآن", W-250, panelY+305);
+      var blob = await new Promise(function(r){ canvas.toBlob(r,"image/jpeg",0.92); });
       var file = new File([blob], fromCode+"-"+toCode+".jpg", {type:"image/jpeg"});
       if(navigator.canShare && navigator.canShare({files:[file]})){
         await navigator.share({files:[file], title:"ALHAYA - "+from+" → "+to, text:text});
@@ -944,7 +973,7 @@ onSnapshot(q, (snap) => {
   }else{
     window.open("https://wa.me/?text="+encodeURIComponent(text), "_blank");
   }
-          }
+  }
 </script> 
 
     
