@@ -865,47 +865,52 @@ onSnapshot(q, (snap) => {
       const safe = (t) => (t||'').toString().replace(/'/g, "\\'");
     html += `
     <div class="relative rounded-2xl overflow-hidden border border-amber-500/30 shadow-xl" style="background:url('${o.image||'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e'}') center/cover; min-height:320px">
-    html += `
-    <div class="relative rounded-2xl overflow-hidden border border-amber-500/30 shadow-xl" style="background:url('${o.image||'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e'}') center/cover; min-height:320px">
+    dynamicOffersCache = offers;
+let html = '';
+offers.forEach((o,i)=>{
+  const book = o.bookingLink || '#';
+  html += `
+    <div class="relative rounded-2xl overflow-hidden border border-amber-500/30 shadow-xl" style="background:url('${o.image}') center/cover; min-height:320px">
       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
       <div class="absolute top-3 right-3 bg-amber-500 text-slate-900 text-[10px] font-black px-2.5 py-1 rounded-full">${o.badge||'عرض خاص'}</div>
       <div class="absolute bottom-0 left-0 right-0 p-2.5">
-        <div class="bg-white/95 backdrop-blur rounded-xl p-3 flex justify-between items-center border-t-2 border-amber-400">
+        <div class="bg-white/95 rounded-xl p-3 flex justify-between items-center border-t-2 border-amber-400">
           <div class="text-right">
             <p class="text-[10px] text-amber-600 font-bold">${o.dateText||''}</p>
-            <p class="text-sm font-black text-slate-900">${safe(o.fromCode)} <span class="text-amber-500">✈</span> ${safe(o.toCode)}</p>
-            <p class="text-xs text-slate-600">${safe(o.from)} → ${safe(o.to)}</p>
-            <p class="text-[10px] text-slate-500">• ${safe(o.stops||'توقف واحد')} • ${safe(o.cabin||'الاقتصادية')}</p>
+            <p class="text-sm font-black text-slate-900">${o.fromCode} ✈ ${o.toCode}</p>
+            <p class="text-xs text-slate-600">${o.from} → ${o.to}</p>
           </div>
           <div class="text-left">
-            <p class="text-[10px] text-slate-500">للخدمة</p>
-            <p class="text-xl font-black text-amber-600">${safe(o.price)} <span class="text-xs">درهم</span></p>
-            <div class="flex items-center gap-1.5 mt-1">
-              <button onclick="shareDynamicOffer('${safe(o.from)}','${safe(o.to)}','${safe(o.fromCode)}','${safe(o.toCode)}','${safe(o.price)}','${safe(o.dateText)}','${book}','${(o.image||``).split(String.fromCharCode(39)).join(``)}')" class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 flex items-center justify-center"><i class="fa-solid fa-share-nodes text-[12px]"></i></button>
+            <p class="text-xl font-black text-amber-600">${o.price} <span class="text-xs">درهم</span></p>
+            <div class="flex gap-1.5 mt-1">
+              <button onclick="shareDynamicOffer(${i})" class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 flex items-center justify-center"><i class="fa-solid fa-share-nodes text-[12px]"></i></button>
               <a href="${book}" target="_blank" class="bg-amber-400 text-slate-900 text-[11px] font-black px-3 py-1.5 rounded-full">احجز الآن</a>
             </div>
           </div>
         </div>
-      </div> 
-    </div>;
-  });
+      </div>
+    </div>`;
+});
   container.innerHTML = html;
 });
 
-    window.shareDynamicOffer = async function(from, to, fromCode, toCode, price, dateText, bookingLink, imageUrl){
-  const text = `عرض خاص 🔥 ${from} (${fromCode}) → ${to} (${toCode}) فقط ${price} درهم - ${dateText}\nاحجز الآن: ${bookingLink}`;
-  try {
-    const res = await fetch(imageUrl);
+    let dynamicOffersCache = [];
+window.shareDynamicOffer = async function(idx){
+  const o = dynamicOffersCache[idx];
+  if(!o) return;
+  const text = `عرض خاص 🔥 ${o.from} (${o.fromCode}) → ${o.to} (${o.toCode}) فقط ${o.price} درهم - ${o.dateText}\nاحجز الآن: ${o.bookingLink}`;
+  try{
+    const res = await fetch(o.image);
     const blob = await res.blob();
-    const file = new File([blob], `${fromCode}-${toCode}.jpg`, {type: blob.type});
-    if (navigator.canShare && navigator.canShare({files: [file]})) {
-      await navigator.share({ files: [file], title: `ALHAYA - ${from} → ${to}`, text: text });
+    const file = new File([blob], `${o.fromCode}-${o.toCode}.jpg`, {type: blob.type});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], title:`ALHAYA - ${o.from} → ${o.to}`, text:text});
       return;
     }
-  } catch(e) {}
-  if (navigator.share) {
-    navigator.share({ title: `ALHAYA - ${from} → ${to}`, text: text, url: bookingLink });
-  } else {
+  }catch(e){}
+  if(navigator.share){
+    navigator.share({title:`ALHAYA - ${o.from} → ${o.to}`, text:text, url:o.bookingLink});
+  }else{
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   }
     }
