@@ -890,13 +890,21 @@ onSnapshot(q, (snap) => {
   container.innerHTML = html;
 });
 
-    window.shareDynamicOffer = function(from, to, fromCode, toCode, price, dateText, bookingLink){
-  const text = `عرض خاص 🔥 ${from} (${fromCode}) → ${to} (${toCode}) فقط ${price} درهم - ${dateText} - احجز الآن: ${bookingLink}`;
+    window.shareDynamicOffer = async function(from, to, fromCode, toCode, price, dateText, bookingLink, imageUrl){
+  const text = `عرض خاص 🔥 ${from} (${fromCode}) → ${to} (${toCode}) فقط ${price} درهم - ${dateText}\nاحجز الآن: ${bookingLink}`;
+  try {
+    const res = await fetch(imageUrl);
+    const blob = await res.blob();
+    const file = new File([blob], `${fromCode}-${toCode}.jpg`, {type: blob.type});
+    if (navigator.canShare && navigator.canShare({files: [file]})) {
+      await navigator.share({ files: [file], title: `ALHAYA - ${from} → ${to}`, text: text });
+      return;
+    }
+  } catch(e) {}
   if (navigator.share) {
-    navigator.share({ title: `ALHAYA TRAVEL`, text: text, url: bookingLink }).catch(()=>{});
+    navigator.share({ title: `ALHAYA - ${from} → ${to}`, text: text, url: bookingLink });
   } else {
-    const waUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
-    window.open(waUrl, '_blank');
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   }
     }
 </script> 
