@@ -893,7 +893,22 @@ onSnapshot(q, (snap) => {
   window.shareDynamicOffer = async function(from, to, fromCode, toCode, price, dateText, bookingLink, btn){
   var text = "عرض خاص 🔥 " + from + " (" + fromCode + ") → " + to + " (" + toCode + ") فقط " + price + " درهم - " + dateText + "\nاحجز الآن: " + bookingLink;
   var imageUrl = "";
-  var stopsText = "توقف واحد • الاقتصادية";
+  function getFlightDetails(offer) {
+  const flightType = offer.flightType || 'مباشر';
+  let stops = offer.stopsCount || '1';
+  const cabin = offer.cabinClass || 'الاقتصادية';
+  
+  if (stops === '1') stops = 'توقف واحد';
+  if (stops === '2') stops = 'توقفان';
+  if (stops === '3') stops = '3 توقفات';
+
+  return flightType === 'مباشر' 
+    ? `مباشر • ${cabin}` 
+    : `${stops} • ${cabin}`;
+}
+
+// في الـ HTML استخدم:
+// ${getFlightDetails(offer)} • ${offer.tripType || 'ذهاب وعودة'}
   try{
     var card = btn? btn.closest(".relative") : null;
     if(card){
