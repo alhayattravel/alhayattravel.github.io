@@ -881,7 +881,7 @@ onSnapshot(q, (snap) => {
             <p class="text-[10px] text-slate-500">للخدمة</p>
             <p class="text-xl font-black text-amber-600">${safe(o.price)} <span class="text-xs">درهم</span></p>
             <div class="flex items-center gap-1.5 mt-1">
-              <button onclick="shareDynamicOffer('${safe(o.from)}','${safe(o.to)}','${safe(o.fromCode)}','${safe(o.toCode)}','${safe(o.price)}','${safe(o.dateText)}','${book}','${(o.image||'').replace(/'/g, '')}')" class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 flex items-center justify-center"><i class="fa-solid fa-share-nodes text-[12px]"></i></button>
+              <button onclick="shareDynamicOffer('${safe(o.from)}','${safe(o.to)}','${safe(o.fromCode)}','${safe(o.toCode)}','${safe(o.price)}','${safe(o.dateText)}','${book}','${(o.image||``).split(String.fromCharCode(39)).join(``)}')" class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 flex items-center justify-center"><i class="fa-solid fa-share-nodes text-[12px]"></i></button>
               <a href="${book}" target="_blank" class="bg-amber-400 text-slate-900 text-[11px] font-black px-3 py-1.5 rounded-full">احجز الآن</a>
             </div>
           </div>
