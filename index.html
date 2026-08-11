@@ -861,7 +861,8 @@ onSnapshot(q, (snap) => {
   let html = '';
   snap.forEach(d => {
     const o = d.data();
-    const book = o.bookingLink || `https://alhayattravel.github.io/?origin=${o.fromCode||'AUH'}&destination=${o.toCode||'CAI'}&marker=758619`;
+    const book = o.bookingLink || `https://alhayattravel.github.io/?origin=${o.fromCode||'AUH'}&destination=${o.toCode||'CAI'}&marker=758619`; 
+      const safe = (t) => (t||'').toString().replace(/'/g, "\\'");
     html += `
     <div class="relative rounded-2xl overflow-hidden border border-amber-500/30 shadow-xl" style="background:url('${o.image||'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e'}') center/cover; min-height:190px">
       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
@@ -877,7 +878,10 @@ onSnapshot(q, (snap) => {
           <div class="text-left">
             <div class="text-[10px] text-slate-500">تبدأ من</div>
             <div class="font-black text-amber-600 text-lg">${o.price||'550'} <span class="text-[10px]">${o.currency||'درهم'}</span></div>
-            <a href="${book}" target="_blank" class="mt-1 inline-block bg-amber-400 text-slate-900 font-black text-[11px] px-4 py-1.5 rounded-full">احجز الآن</a>
+            <div class="flex items-center gap-1.5 mt-1">
+  <button onclick="shareDynamicOffer('${safe(o.from)}','${safe(o.to)}','${safe(o.fromCode)}','${safe(o.toCode)}','${safe(o.price)}','${safe(o.dateText)}','${book}')" class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 border border-amber-400/30 flex items-center justify-center text-[12px]"><i class="fa-solid fa-share-nodes"></i></button>
+  <a href="${book}" target="_blank" class="inline-block bg-amber-400 text-slate-900 font-black text-[11px] px-4 py-1.5 rounded-full">احجز الآن</a>
+</div>
           </div>
         </div>
       </div>
@@ -885,7 +889,18 @@ onSnapshot(q, (snap) => {
   });
   container.innerHTML = html;
 });
-</script>
+
+    window.shareDynamicOffer = function(from, to, fromCode, toCode, price, dateText, bookingLink){
+  const text = `عرض خاص 🔥 ${from} (${fromCode}) → ${to} (${toCode}) فقط ${price} درهم - ${dateText} - احجز الآن: ${bookingLink}`;
+  if (navigator.share) {
+    navigator.share({ title: `ALHAYA TRAVEL`, text: text, url: bookingLink }).catch(()=>{});
+  } else {
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(waUrl, '_blank');
+  }
+    }
+</script> 
+
     
 </body>
 </html>
