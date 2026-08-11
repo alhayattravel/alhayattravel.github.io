@@ -879,7 +879,7 @@ onSnapshot(q, (snap) => {
             <div class="text-[10px] text-slate-500">تبدأ من</div>
             <div class="font-black text-amber-600 text-lg">${o.price||'550'} <span class="text-[10px]">${o.currency||'درهم'}</span></div>
             <div class="flex items-center gap-1.5 mt-1">
-  <button onclick="shareDynamicOffer('${safe(o.from)}','${safe(o.to)}','${safe(o.fromCode)}','${safe(o.toCode)}','${safe(o.price)}','${safe(o.dateText)}','${book}')" class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 border border-amber-400/30 flex items-center justify-center text-[12px]"><i class="fa-solid fa-share-nodes"></i></button>
+  onclick="shareDynamicOffer('${safe(o.from)}','${safe(o.to)}','${safe(o.fromCode)}','${safe(o.toCode)}','${safe(o.price)}','${safe(o.dateText)}','${book}','${o.image}')" class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 border border-amber-400/30 flex items-center justify-center text-[12px]"><i class="fa-solid fa-share-nodes"></i></button>
   <a href="${book}" target="_blank" class="inline-block bg-amber-400 text-slate-900 font-black text-[11px] px-4 py-1.5 rounded-full">احجز الآن</a>
 </div>
           </div>
