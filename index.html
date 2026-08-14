@@ -975,6 +975,14 @@ onSnapshot(q, (snap) => {
   }
   }
 </script> 
+  // كود خفي لتغيير الرمز العربي للعملة إلى الحروف الإنجليزية AED مع الحفاظ على التصميم
+  document.addEventListener("DOMContentLoaded", function () {
+    const observer = new MutationObserver(function (mutations) {
+      document.body.innerHTML = document.body.innerHTML.replace(/د\.إ/g, 'AED');
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  });
+</script>
 
     
 </body>
