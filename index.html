@@ -38,17 +38,24 @@
     }
     </script>
 
-    
-    <script data-cfasync="false" data-wpfc-render="false">
-  (function () {
+    <script>
+  window.addEventListener('load', function() {
+    setTimeout(function() {
       var script = document.createElement("script");
-      script.async = true;
-      script.defer = true;
+      script.nowprocket = true;
+      script.setAttribute("data-noptimize", "1");
+      script.setAttribute("data-cfasync", "false");
+      script.setAttribute("data-wpfc-render", "false");
+      script.setAttribute("seraph-accel-crit", "1");
+      script.setAttribute("data-no-defer", "1");
       script.setAttribute("data-cmp-ab", "2");
+      script.async = 1;
       script.src = 'https://tpembars.com/NTY0NDg0.js?t=564484';
       document.head.appendChild(script);
-  })();
+    }, 1500); // تأخير مدته 1.5 ثانية فقط لضمان فتح الموقع واختفاء علامة التحميل
+  });
 </script>
+
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
