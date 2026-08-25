@@ -238,12 +238,14 @@
                 <button onclick="navigateTo('why-us')" class="glass-card hover:border-sky-500/50 p-4 rounded-2xl flex items-center gap-3 transition text-right group">
                     <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center text-lg flex-shrink-0 group-hover:bg-sky-500 group-hover:text-slate-950 transition"><i class="fa-solid fa-circle-question"></i></div>
                     <div><h4 class="text-sm font-bold text-white" data-ar="لماذا ALHAYAT TRAVEL؟" data-en="Why ALHAYAT TRAVEL?">Why ALHAYAT TRAVEL?</h4><p class="text-[11px] text-slate-400 mt-0.5" data-ar="تعرف على مميزاتنا ولفتة خاصة لك" data-en="Discover our features and special note">Discover our features and special note</p></div>
-                </button> 
-                <button onclick="navigateTo('destinations')" class="glass-card hover:border-sky-500/50 p-4 rounded-2xl flex items-center gap-3 transition text-right group">
-                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg flex-shrink-0 group-hover:bg-amber-500 group-hover:text-slate-950 transition"><i class="fa-solid fa-globe"></i></div>
-                    <div><h4 class="text-sm font-bold text-white" data-ar="استكشف جميع الوجهات" data-en="Explore All Destinations">Explore All Destinations</h4><p class="text-[11px] text-slate-400 mt-0.5" data-ar="الوجهات الأكثر شعبية وبحثاً" data-en="Most popular and searched destinations">Most popular and searched destinations</p></div> 
-                </button>
-            </div>
+                <button onclick="openDestinationsModal()" class="glass-card hover:border-sky-500/50 p-4 rounded-2xl flex items-center gap-3 transition text-right group">
+    <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg flex-shrink-0 group-hover:bg-amber-500 group-hover:text-slate-950 transition"><i class="fa-solid fa-globe"></i></div>
+    <div>
+        <h4 class="text-sm font-bold text-white" data-ar="استكشف جميع الوجهات" data-en="Explore All Destinations">Explore All Destinations</h4>
+        <p class="text-[11px] text-slate-400 mt-0.5" data-ar="الوجهات الأكثر شعبية وبحثاً" data-en="Most popular and searched destinations">Most popular and searched destinations</p>
+    </div> 
+</button>
+
             <div class="glass-card rounded-2xl p-4 mb-6">
                 <div class="flex items-center gap-2 mb-3 text-xs font-bold text-slate-300"><i class="fa-solid fa-clock-rotate-left text-sky-400"></i><span data-ar="تابع من حيث توقفت" data-en="Continue where you left off">Continue where you left off</span></div>
                 <div id="continueContainer" class="text-xs text-slate-300 text-center py-4 bg-slate-900/50 rounded-xl border border-slate-800" data-ar="لا توجد عمليات بحث سابقة. ابدأ بحثك الآن وسيتم حفظه تلقائياً!" data-en="No previous searches. Start searching now and it will be saved automatically!">No previous searches. Start searching now and it will be saved automatically!</div>
@@ -979,8 +981,29 @@ onSnapshot(q, (snap) => {
   }
   }
  
+function openDestinationsModal() {
+    document.getElementById('destinationsModal').classList.remove('hidden');
+}
 
-</script>
+function closeDestinationsModal() {
+    document.getElementById('destinationsModal').classList.add('hidden');
+}
+
+</script> 
+    <div id="destinationsModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 relative text-white">
+        
+        <button onclick="closeDestinationsModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-xl font-bold w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 border border-slate-700">✕</button>
+
+        <h3 class="text-xl font-bold mb-4 text-center text-amber-400" data-ar="استكشف جميع الوجهات" data-en="Explore All Destinations">استكشف جميع الوجهات</h3>
+
+        <div class="tp-widget-container min-h-[300px]">
+            <script async src="https://tpwgts.com/content?currency=aed&trs=564484&shmarker=758619&target_host=www.aviasales.com%2Fsearch&locale=en&limit=10&powered_by=false&primary=%230085FF&promo_id=4044&campaign_id=100" charset="utf-8"></script>
+        </div>
+
+    </div>
+</div>
+
 
 
     
