@@ -502,9 +502,10 @@
             <button onclick="navigateTo('favorites'); updateBottomIndicator(1);" id="navBtn-favorites" class="bottom-nav-item flex flex-col items-center gap-1 hover:text-sky-400 transition py-1 flex-1">
                 <i class="fa-solid fa-heart text-[18px]"></i><span data-ar="المحفوظات" data-en="Favorites">Favorites</span>
             </button>
-            <button onclick="navigateTo('drops'); updateBottomIndicator(2);" id="navBtn-drops" class="bottom-nav-item flex flex-col items-center gap-1 hover:text-sky-400 transition py-1 flex-1">
-                <i class="fa-solid fa-tags text-[18px]"></i><span data-ar="العروض" data-en="Deals">Deals</span>
-            </button>
+            <button onclick="window.location.href='deals.html'" id="navBtn-drops" class="bottom-nav-item flex flex-col items-center gap-1 hover:text-sky-400 transition py-1 flex-1">
+    <i class="fa-solid fa-tags text-[18px]"></i><span data-ar="العروض" data-en="Deals">العروض</span>
+</button>
+
             <button onclick="navigateTo('articles'); updateBottomIndicator(3);" id="navBtn-articles" class="bottom-nav-item flex flex-col items-center gap-1 hover:text-sky-400 transition py-1 flex-1">
                 <i class="fa-solid fa-newspaper text-[18px]"></i><span data-ar="مقالات" data-en="Articles">Articles</span>
             </button>
