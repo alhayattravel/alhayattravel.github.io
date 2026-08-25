@@ -1,14 +1,64 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" id="htmlTag">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>العروض الحصرية</title>
+    <title>العروض الحصرية | Exclusive Deals</title>
+    <!-- أيقونات FontAwesome للزر -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body style="background-color: #070D1E; color: #ffffff; padding: 20px; font-family: sans-serif;">
-    <h2 style="text-align: center; margin-bottom: 20px;">أحدث العروض والخصومات</h2>
-    
-    <!-- كود العروض -->
-    <script async src="https://tpwgts.com/content?currency=usd&trs=564484&shmarker=758619&locale=en&powered_by=false&limit=4&primary_color=00AE98&results_background_color=FFFFFF&form_background_color=FFFFFF&promo_id=4563&campaign_id=111" charset="utf-8"></script>
+<body style="background-color: #070D1E; color: #ffffff; padding: 20px; font-family: sans-serif; margin: 0;">
+
+    <!-- الشريط العلوي مع زر العودة للرئيسية والعنوان -->
+    <div style="display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto 20px auto; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <a href="index.html" style="color: #00AE98; text-decoration: none; font-size: 16px; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-arrow-right" id="backIcon"></i>
+            <span id="backText">الرئيسية</span>
+        </a>
+        <h2 id="mainTitle" style="margin: 0; font-size: 18px; text-align: center;">أحدث العروض والخصومات</h2>
+        <div style="width: 70px;"></div> <!-- موازن للشكل -->
+    </div>
+
+    <!-- مكان إدراج ويدجت العروض -->
+    <div id="widgetContainer" style="max-width: 600px; margin: 0 auto;"></div>
+
+    <script>
+        // 1. تحديد لغة المستخدم من ذاكرة الموقع أو المتصفح
+        let currentLang = localStorage.getItem('lang') || localStorage.getItem('site_lang') || 'ar';
+        
+        // قراءة اللغة من رابط الصفحة إن وجد (مثال: deals.html?lang=en)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('lang')) {
+            currentLang = urlParams.get('lang');
+        }
+
+        const htmlTag = document.getElementById('htmlTag');
+        const mainTitle = document.getElementById('mainTitle');
+        const backText = document.getElementById('backText');
+        const backIcon = document.getElementById('backIcon');
+
+        // 2. ضبط اتجاه الصفحة والنصوص حسب اللغة
+        if (currentLang === 'en') {
+            htmlTag.setAttribute('lang', 'en');
+            htmlTag.setAttribute('dir', 'ltr');
+            mainTitle.textContent = 'Latest Deals & Discounts';
+            backText.textContent = 'Home';
+            backIcon.className = 'fa-solid fa-arrow-left';
+        } else {
+            htmlTag.setAttribute('lang', 'ar');
+            htmlTag.setAttribute('dir', 'rtl');
+            mainTitle.textContent = 'أحدث العروض والخصومات';
+            backText.textContent = 'الرئيسية';
+            backIcon.className = 'fa-solid fa-arrow-right';
+        }
+
+        // 3. تحميل ويدجت العروض باللغة المختارة (ar أو en)
+        const script = document.createElement('script');
+        script.async = true;
+        script.charset = 'utf-8';
+        script.src = `https://tpwgts.com/content?currency=usd&trs=564484&shmarker=758619&locale=${currentLang}&powered_by=false&limit=4&primary_color=00AE98&results_background_color=FFFFFF&form_background_color=FFFFFF&promo_id=4563&campaign_id=111`;
+        
+        document.getElementById('widgetContainer').appendChild(script);
+    </script>
 </body>
 </html>
