@@ -1,27 +1,55 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" id="mainHtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>العروض الحصرية</title>
+    <title>العروض الحصرية | Exclusive Deals</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body style="background-color: #070D1E; color: #ffffff; padding: 20px; font-family: sans-serif; margin: 0;">
 
-    <!-- الشريط العلوي -->
+    <script>
+        // قراءة لغة الموقع المحددة
+        var userLang = localStorage.getItem('lang') || new URLSearchParams(window.location.search).get('lang') || 'ar';
+        if (userLang !== 'en') userLang = 'ar';
+    </script>
+
+    <!-- الشريط العلوي والتنقل -->
     <div style="display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto 20px auto; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
         <a href="index.html" style="color: #00AE98; text-decoration: none; font-size: 16px; display: flex; align-items: center; gap: 8px;">
-            <i class="fa-solid fa-arrow-right"></i>
-            <span>الرئيسية</span>
+            <script>
+                if (userLang === 'en') {
+                    document.write('<i class="fa-solid fa-arrow-left"></i> <span>Home</span>');
+                } else {
+                    document.write('<i class="fa-solid fa-arrow-right"></i> <span>الرئيسية</span>');
+                }
+            </script>
         </a>
-        <h2 style="margin: 0; font-size: 18px; text-align: center;">أحدث العروض والخصومات</h2>
+        <h2 style="margin: 0; font-size: 18px; text-align: center;">
+            <script>
+                document.write(userLang === 'en' ? 'Latest Deals & Discounts' : 'أحدث العروض والخصومات');
+            </script>
+        </h2>
         <div style="width: 70px;"></div>
     </div>
 
-    <!-- كود العروض المباشر -->
+    <!-- تحميل ويدجت العروض باللغة المناسبة أثناء تحميل الصفحة -->
     <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden;">
-        <script async src="https://tpwgts.com/content?currency=usd&trs=564484&shmarker=758619&locale=ar&powered_by=false&limit=4&primary_color=00AE98&results_background_color=FFFFFF&form_background_color=FFFFFF&promo_id=4563&campaign_id=111" charset="utf-8"></script>
+        <script>
+            if (userLang === 'en') {
+                document.write('<script async src="https://tpwgts.com/content?currency=usd&trs=564484&shmarker=758619&locale=en&powered_by=false&limit=4&primary_color=00AE98&results_background_color=FFFFFF&form_background_color=FFFFFF&promo_id=4563&campaign_id=111" charset="utf-8"><\/script>');
+            } else {
+                document.write('<script async src="https://tpwgts.com/content?currency=usd&trs=564484&shmarker=758619&locale=ar&powered_by=false&limit=4&primary_color=00AE98&results_background_color=FFFFFF&form_background_color=FFFFFF&promo_id=4563&campaign_id=111" charset="utf-8"><\/script>');
+            }
+        </script>
     </div>
 
+    <script>
+        // ضبط اتجاه الصفحة إذا كانت إنجليزية
+        if (userLang === 'en') {
+            document.getElementById('mainHtml').setAttribute('lang', 'en');
+            document.getElementById('mainHtml').setAttribute('dir', 'ltr');
+        }
+    </script>
 </body>
 </html>
