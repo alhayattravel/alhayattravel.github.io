@@ -1,61 +1,14 @@
 <!DOCTYPE html>
-<html id="pageHtml" lang="ar" dir="rtl">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>العروض | Deals</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { background-color: #070D1E; color: #ffffff; font-family: sans-serif; margin: 0; padding: 15px; }
-        .nav-header { display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .back-link { color: #00AE98; text-decoration: none; font-size: 15px; display: flex; align-items: center; gap: 6px; }
-        .widget-box { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; min-height: 300px; overflow: hidden; }
-    </style>
+    <title>العروض الحصرية</title>
 </head>
-<body>
-
-    <script>
-        // فحص لغة الموقع بأمان تسبق التحميل
-        var currentLang = 'ar';
-        try {
-            var stored = localStorage.getItem('lang') || localStorage.getItem('language');
-            if (stored === 'en' || window.location.search.includes('lang=en')) {
-                currentLang = 'en';
-            }
-        } catch(e) {}
-    </script>
-
-    <!-- شريط العودة والعنوان -->
-    <div class="nav-header">
-        <a href="index.html" class="back-link">
-            <script>
-                if (currentLang === 'en') {
-                    document.write('<i class="fa-solid fa-arrow-left"></i> <span>Home</span>');
-                } else {
-                    document.write('<i class="fa-solid fa-arrow-right"></i> <span>الرئيسية</span>');
-                }
-            </script>
-        </a>
-        <h2 style="margin: 0; font-size: 17px; text-align: center;">
-            <script>
-                document.write(currentLang === 'en' ? 'Latest Deals & Discounts' : 'أحدث العروض والخصومات');
-            </script>
-        </h2>
-        <div style="width: 50px;"></div>
-    </div>
-
-    <!-- صندوق ويدجت العروض -->
-    <div class="widget-box">
-        <script>
-            if (currentLang === 'en') {
-                document.getElementById('pageHtml').dir = 'ltr';
-                document.getElementById('pageHtml').lang = 'en';
-                document.write('<script async src="https://tpwgts.com/content?currency=usd&trs=564484&shmarker=758619&locale=en&powered_by=false&limit=4&primary_color=00AE98&results_background_color=FFFFFF&form_background_color=FFFFFF&promo_id=4563&campaign_id=111" charset="utf-8"><\/script>');
-            } else {
-                document.write('<script async src="https://tpwgts.com/content?currency=usd&trs=564484&shmarker=758619&locale=ar&powered_by=false&limit=4&primary_color=00AE98&results_background_color=FFFFFF&form_background_color=FFFFFF&promo_id=4563&campaign_id=111" charset="utf-8"><\/script>');
-            }
-        </script>
-    </div>
-
+<body style="background-color: #070D1E; color: #ffffff; padding: 20px; font-family: sans-serif;">
+    <h2 style="text-align: center; margin-bottom: 20px;">Exclusive Deals</h2>
+    
+    <!-- كود العروض -->
+    <script async src="https://tpwgts.com/content?currency=usd&trs=564484&shmarker=758619&locale=en&powered_by=false&limit=4&primary_color=00AE98&results_background_color=FFFFFF&form_background_color=FFFFFF&promo_id=4563&campaign_id=111" charset="utf-8"></script>
 </body>
 </html>
