@@ -980,9 +980,29 @@ onSnapshot(q, (snap) => {
   }
   }
  
+function openDestinationsModal() {
+    document.getElementById('destinationsModal').classList.remove('hidden');
+}
+
+function closeDestinationsModal() {
+    document.getElementById('destinationsModal').classList.add('hidden');
+}
 
 </script> 
     
+<div id="destinationsModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 relative text-white">
+        
+        <button onclick="closeDestinationsModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-xl font-bold w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 border border-slate-700">✕</button>
+
+        <h3 class="text-xl font-bold mb-4 text-center text-sky-400" data-ar="أبرز الوجهات والرحلات">أبرز الوجهات والرحلات</h3>
+
+        <div class="tp-widget-container min-h-[300px]">
+            <script async src="https://tpwgts.com/content?currency=aed&trs=564484&shmarker=758619&target_host=www.aviasales.com%2Fsearch&locale=en&limit=10&powered_by=false&primary=%230085FF&promo_id=4044&campaign_id=100" charset="utf-8"></script>
+        </div>
+
+    </div>
+</div>
 
 
 
